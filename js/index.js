@@ -4,6 +4,8 @@ const floor = $('#floor');
 const basket = $('#basket');
 let mouseMove = null;
 const main = $('main')
+const livesOb = $('#lives');
+const scoreOb = $('#score');
 
 $(function () {
     $('.eggs').css('display', 'none');
@@ -35,11 +37,17 @@ function start() {
     $('.start').css('display', 'none');
     basket.css('display', 'block');
     $('.eggs').css('display', 'block');
-    $('#lives').text(lives);
-    $('#score').text(score);
+    livesOb.text(lives);
+    scoreOb.text(score);
     main.on('mousemove', function (e) {
         basket.css('left', e.pageX - 75)
     });
+    let level = $('#level').val();
+    let speed = {
+        game: level === 'easy' ? 15 : level === 'medium' ? 10 : level === 'hard' ? 5 : 15,
+        egg: level === 'easy' ? 6000 : level === 'medium' ? 5000 : level === 'hard' ? 4000 : 6000,
+        fall: level === 'easy' ? 3 : level === 'medium' ? 4 : level === 'hard' ? 5 : 3,
+    }
     gameLoop = setInterval(function () {
         $('.eggs').each(function () {
             if (collision($(this), floor) && !collision($(this), $('#basket'))) {
@@ -53,7 +61,7 @@ function start() {
                     'left': Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25
                 });
                 lives--
-                $('#lives').text(lives);
+                livesOb.text(lives);
                 if (lives === 0) {
                     gameOver();
                 }
@@ -63,15 +71,23 @@ function start() {
                     'left': Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25
                 });
                 score++;
-                $('#score').text(score);
+                scoreOb.text(score);
             }
-            fallEgg($(this), (Math.floor(Math.random() * 5) + 1));
+            fallEgg($(this), (Math.floor(Math.random() * speed.fall) + 1));
         });
-    }, 10);
+    }, speed.game);
+    let bool = true;
     eggLoop = setInterval(function () {
         main.append('<img src="assets/img/egg.png" style="left: ' + (Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25) + 'px" alt="Egg" class="eggs">');
         audio.play();
-    }, 6000);
+        if (bool) {
+            $("p").transition({'font-size': 'calc(1.5rem + 2vw)' }, speed.egg / 2);
+            bool = false;
+        } else {
+            $("p").transition({'font-size': 'calc(1.375rem + 1.5vw)' }, speed.egg / 2);
+            bool = true;
+        }
+    }, speed.egg);
 }
 
 function fallEgg(egg, speed) {
