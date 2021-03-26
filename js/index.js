@@ -43,11 +43,11 @@ function start() {
     main.on('mousemove', function (e) {
         basket.css('left', e.pageX - 75)
     });
-    let level = $('#level').val();
+    let level = Number($('#level').val());
     let speed = {
-        game: level === 'easy' ? 15 : level === 'medium' ? 10 : level === 'hard' ? 5 : 15,
-        egg: level === 'easy' ? 6000 : level === 'medium' ? 5000 : level === 'hard' ? 4000 : 6000,
-        fall: level === 'easy' ? 3 : level === 'medium' ? 4 : level === 'hard' ? 5 : 3,
+        game: level === 1 ? 15 : level === 2 ? 10 : level === 3 ? 5 : 15,
+        egg: level === 1 ? 6000 : level === 2 ? 5000 : level === 3 ? 4000 : 6000,
+        fall: level === 1 ? 3 : level === 2 ? 4 : level === 3 ? 5 : 3,
     }
     gameLoop = setInterval(function () {
         $('.eggs').each(function () {
@@ -64,7 +64,7 @@ function start() {
                 lives--
                 livesOb.text(lives);
                 if (lives === 0) {
-                    if (score > highScore) highScore = score;
+                    if (score * level > highScore) highScore = score * level;
                     gameOver();
                 }
             } else if (collision($(this), basket)) {
@@ -73,7 +73,7 @@ function start() {
                     'left': Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25
                 });
                 score++;
-                scoreOb.text(score);
+                scoreOb.text((score * level));
             }
             fallEgg($(this), (Math.floor(Math.random() * speed.fall) + 1));
         });
