@@ -6,6 +6,7 @@ let mouseMove = null;
 const main = $('main')
 const livesOb = $('#lives');
 const scoreOb = $('#score');
+let highScore = 0;
 
 $(function () {
     $('.eggs').css('display', 'none');
@@ -63,6 +64,7 @@ function start() {
                 lives--
                 livesOb.text(lives);
                 if (lives === 0) {
+                    if (score > highScore) highScore = score;
                     gameOver();
                 }
             } else if (collision($(this), basket)) {
@@ -76,17 +78,9 @@ function start() {
             fallEgg($(this), (Math.floor(Math.random() * speed.fall) + 1));
         });
     }, speed.game);
-    let bool = true;
     eggLoop = setInterval(function () {
         main.append('<img src="assets/img/egg.png" style="left: ' + (Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25) + 'px" alt="Egg" class="eggs">');
         audio.play();
-        if (bool) {
-            $("p").transition({'font-size': 'calc(1.5rem + 2vw)' }, speed.egg / 2);
-            bool = false;
-        } else {
-            $("p").transition({'font-size': 'calc(1.375rem + 1.5vw)' }, speed.egg / 2);
-            bool = true;
-        }
     }, speed.egg);
 }
 
@@ -102,4 +96,5 @@ function gameOver() {
     $('.eggs').css('display', 'none');
     basket.css('display', 'none');
     $('.start').css('display', 'block');
+    $('#highScore').text(highScore);
 }
