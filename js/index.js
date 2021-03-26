@@ -43,6 +43,11 @@ function start() {
     gameLoop = setInterval(function () {
         $('.eggs').each(function () {
             if (collision($(this), floor) && !collision($(this), $('#basket'))) {
+                let id = Math.floor(Math.random() * 1000);
+                main.append('<img src="assets/img/brokenEgg.png" alt="Broken Egg" id="' + id + '" style="width: 50px; position: absolute; bottom: 1vh; left: ' + $(this).css('left') + '">');
+                setTimeout(function () {
+                    document.getElementById(id.toString()).remove();
+                }, 1500);
                 $(this).css({
                     'top': 0,
                     'left': Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25
