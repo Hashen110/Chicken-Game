@@ -31,7 +31,7 @@ function start() {
     let lives = 5
     let score = 0;
     audio.play();
-    main.append('<img src="assets/img/egg.png" style="width: 50px; position: relative; left: ' + (Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25) + 'px" alt="Egg" class="eggs">');
+    main.append('<img src="assets/img/egg.png" style="left: ' + (Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25) + 'px" alt="Egg" class="eggs">');
     $('.start').css('display', 'none');
     basket.css('display', 'block');
     $('.eggs').css('display', 'block');
@@ -69,7 +69,7 @@ function start() {
         });
     }, 10);
     eggLoop = setInterval(function () {
-        main.append('<img src="assets/img/egg.png" style="width: 50px; position: relative; left: ' + (Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25) + 'px" alt="Egg" class="eggs">');
+        main.append('<img src="assets/img/egg.png" style="left: ' + (Math.floor(Math.random() * ((parseInt(floor.css('width')) - 25) - 25 + 1)) + 25) + 'px" alt="Egg" class="eggs">');
         audio.play();
     }, 6000);
 }
